@@ -5,8 +5,9 @@ import stanza as st
 from nltk.tree import Tree
 import parsing_utils as pu
 import torch
+import torch.nn as nn
 from datetime import datetime
-
+import model
 
 #Read posts for training
 #posts = ex.read_posts('st1_public_data/st1_train_inc_text.csv')
@@ -29,5 +30,11 @@ from datetime import datetime
 #Load filtered constituencies
 #new_constituency_spans = pu.filter_constituency_spans(constituency_spans)
 
+X = torch.load('file.pt')
+f = nn.Softmax(dim = 0 )
+model = model.Linear(768,5)
+model.load_state_dict(torch.load('model_1'))
+model.eval()
 
-
+o = model(X[1])
+print(f(o))

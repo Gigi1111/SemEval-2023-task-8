@@ -9,12 +9,20 @@ import extraction as ex
 import matplotlib.pyplot as plt
 from spacy.tokenizer import Tokenizer
 from spacy.lang.en import English
+import parsing_utils as pu
 
 
+filtered_spans = torch.load('new_constituency_spans.pt')
 
+#How many spans per sentence:
 
+nr_spans =[]
+for fs in filtered_spans:
+        for s in fs:
+                nr_spans.append(len(s))
 
-
+plt.hist(nr_spans, bins=50, edgecolor='black')
+plt.show()
 
 
 

@@ -2,6 +2,7 @@ from cProfile import label
 from types import NoneType
 import extraction as ex
 import spacy
+import torch
 
 
 def convert_posts_to_docs(posts):
@@ -57,3 +58,13 @@ def generate_dataset(docs):
     return X  # X[0] = ['some redit post..', 'a span..', [1,0,0,0]] X= [[],[],[]...] - datapoints like X[0]
     #print(len(X)) #12168
 
+# def generate_constituency_based_dataset(): #this will be fed to the model so the test set needs to be manipulated, so far its training
+#     filtered_spans = torch.load('new_constituency_spans.pt')
+#     posts = ex.read_posts('st1_public_data/st1_train_inc_text.csv') # list[RedditPost]
+#     #dataset
+#     X = []
+#     #generate dataset:
+#     length = len(posts) -1
+#     for i in range(length):
+
+#         data_point = [posts[i].text, ]

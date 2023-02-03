@@ -13,16 +13,22 @@ import extraction as ex
 X = torch.load('file.pt')
 Y_i= torch.load('labels.pt')
 
+#Add slot for "None" category
+z = torch.zeros((len(Y_i),1))
+Y_i =torch.cat((Y_i,z),1)
+
 Y = np.argmax(Y_i, axis=1)
+
+
 
 #TRAINING
 
 criterion = torch.nn.CrossEntropyLoss()
-model = model.Linear(768,4)
+model = model.Linear(768,5)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 X = X
 Y = Y
-num_epochs = 1000
+num_epochs = 500
 
 model.train()
 for epoch in range(num_epochs):
@@ -40,6 +46,11 @@ for epoch in range(num_epochs):
 
     average_train_loss = running_loss/ len(X)
     print('Epoch [{}/{}], Train Loss per Epoch: {:.4f}'.format(epoch+1, num_epochs, average_train_loss))
+
+
+torch.save(model.state_dict(), 'model_1')
+
+
                 
 #EVALUATION
 #TBD
