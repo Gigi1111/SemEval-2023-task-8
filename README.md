@@ -37,6 +37,10 @@ For subtask 1, the training data contains 5695 reddit texts, and from which, we 
 
 
 -----------------------------
+## Sentence based baseline models 
+
+The baseline models can be found in the Sentence_level_binary_classification.ipynb and Sentence_level_multi_label_classification.ipynb files, the data they use can be found in the st1_data_train_sent.csv file.
+
 ## Constituency based models 
 
 The constituency_based_models folder of this repository contains the code for the 4 binary models described in the report paper.
