@@ -53,6 +53,3 @@ Download the embedding files in their corresponding model folders.
 Run the .py file of the folder.
 
 The functions pertaining to reading the original data files, visualisation of a Reddit post and its spans, the parsing and embedding of posts and their constituents can be found in the parent directory (constituency_based_models). 
-
-/Users/alexandra/Documents/argument_mining/Eval-2023-task-8/binary_question/X_question.pt
-/Users/alexandra/Documents/argument_mining/Eval-2023-task-8/binary_per_exp/X_per_exp.pt
