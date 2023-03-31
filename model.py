@@ -24,6 +24,7 @@ class LSTM(nn.Module):
 
 
 class Linear(nn.Module):
+    #For binary classification
     def __init__(self,  hidden_dim, out_dim ):
         super(Linear, self).__init__()
 
@@ -32,8 +33,8 @@ class Linear(nn.Module):
 
         self.linear= nn.Linear(hidden_dim, out_dim)
     def forward(self, input):
-            
-        linear_out = self.linear(input)
+        n = nn.Sigmoid()
+        linear_out = n(self.linear(input))
     
         return linear_out
    

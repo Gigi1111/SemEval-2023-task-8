@@ -2,7 +2,7 @@
 import torch
 from transformers import BertTokenizer, BertModel
 from datetime import datetime
-
+import extraction as ex
 
 def get_sentence_embedding(input_string, tokenizer, emb_model):
     e = tokenizer.encode(input_string,truncation = True, return_tensors = 'pt')
@@ -63,3 +63,58 @@ def construct_input_eff(docs, tokenizer, emb_model): # posts = X post, span, lab
             print("Data point "+ str(i)+ " done at "+ current_time,)
     return X
         
+def embed_posts():
+    
+    embeds = []
+    count = 0
+    posts = ex.read_posts('st1_public_data/st1_train_inc_text.csv')
+    l = len(posts)
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+    model = BertModel.from_pretrained('bert-base-uncased',
+                                  output_hidden_states = True, # Whether the model returns all hidden-states.
+                                  )
+    for p in posts:
+       count += 1
+       print(str(count)+" /"+str(l))
+       embeds.append(get_sentence_embedding(p.text,tokenizer,model))
+       
+    
+    torch.save(embeds, 'post_embeddings.pt')
+
+
+# #the text of the post where the span is coming from 
+# tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+# model = BertModel.from_pretrained('bert-base-uncased',
+#                                   output_hidden_states = True, # Whether the model returns all hidden-states.
+#                              )
+
+def generate_embeddings_binary_classifier(data_points):
+    X =[]
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+    model = BertModel.from_pretrained('bert-base-uncased',
+                                  output_hidden_states = True, # Whether the model returns all hidden-states.
+                                  )
+    posts = ex.read_posts('st1_public_data/st1_train_inc_text.csv')
+    #Post embeddings dictionary: 
+    embeds_posts = dict()
+    #Running the embeddings might take a bit of time so the post text embeddings were run and saved in "post_embeddings.pt"
+    #(origin: embeddings.py, "embed_posts()")
+    em = torch.load("post_embeddings.pt")
+    for i in range(len(posts)-1):
+        embeds_posts[posts[i].text] = em[i]
+
+
+    l = len(data_points) 
+    count = 0                          
+    for x in data_points:
+        count += 1
+        if(count%100 ==0):
+          print(str(count)+" /"+str(l))
+        text_key = x[0]
+        
+        if text_key in embeds_posts: 
+          post_text_emb  = embeds_posts[text_key] #post embedding
+          span_emb = get_sentence_embedding(x[1], tokenizer, model) 
+          X.append(post_text_emb + span_emb)
+    return X
+

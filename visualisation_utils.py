@@ -21,7 +21,7 @@ def visualise_reddit_post(post):
       #NOTE: The alignment_mode = contract specifies that only the tokens fully contained in the range defined by the
       #characters will be highlighted. Other options are 'strict' -> the offsets must be found on a token boundary,
       # and 'expand'-> highlights token that are also only partially covered by the range.
-      span = doc.char_span(a['start_offset'],a['end_offset'], label=a['label'], alignment_mode = 'contract')
+      span = doc.char_span(a['start_offset'],a['end_offset'], label=a['label'], alignment_mode = 'expand')
       spans.append(span)
     
     doc.set_ents(spans)

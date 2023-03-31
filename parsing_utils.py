@@ -8,6 +8,22 @@ import torch
 
 #Global pipeline needs to be declared and passed as argument to this function!
 #nlp = st.Pipeline('en', verbose = False)
+
+def get_string_constituency(string_text, nlp):
+    doc = nlp(string_text) 
+    constituencies = [] # hold sentence trees in here
+    print(doc)
+    #get the constituencies (a span can extend over multiple sentences)
+    for sentence in doc.sentences:
+        constituencies.append(sentence.constituency)
+
+    #To pretty print a tree, lets say the tree of the first sentence:
+    #parsetree = Tree.fromstring(str(constituencies[0]))
+    #parsetree.pretty_print()
+    
+    return constituencies
+
+
 def get_post_constituency(post_text, nlp):
     """ GET the parse trees of post sentences (singular post)
     Input: RedditPost text?
@@ -113,6 +129,22 @@ def filter_constituency_spans(constituency_spans):
     torch.save(new_constituency_spans, 'new_constituency_spans.pt')
     return new_constituency_spans
 
+
+def create_post_constituents_dictionary():
+    #create dictionary with post_text as id and constituents as value: 
+    posts = ex.read_posts('st1_public_data/st1_train_inc_text.csv')
+
+    #Filtered spans:
+    #Post, sentence, dictionaries(label, array)
+    constituency_spans = torch.load('new_constituency_spans.pt')
+
+    post_spans = dict()
+
+    for i in range(len(posts)-1):
+        post_spans[posts[i].text] = constituency_spans[i]
+        
+    torch.save(post_spans,'post_spans.pt')
+    return post_spans
 
 
 
