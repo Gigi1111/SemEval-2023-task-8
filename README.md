@@ -28,10 +28,6 @@ Question: Poses a question.
 Participants can work on it at sentence level and try to classify sentences in one of the given classes but many times claim (or other class) is just a part of the sentence. But this maybe only a baseline as in many examples only a part of sentence is annotated as one of these category. Please check the image below for more clarity.
 
 
-### Subtask 2: PIO frame extraction:
-In this subtask, for a given multi (or single) sentence text snippet and identified claim in that snippet, the task is to extract related Population (P), Intervention (I), and Outcome (O) frame. While it is rare, it may be the case that there is more than one claim in any given post. In that case, we want to identify PIO elements for a given claim. This can be framed as a sequence tagging task.
-
-
 ## Corpora 
 
 The Reddit texts were extracted from the Codalab folder by the SemEval task 8 creators [here](https://codalab.lisn.upsaclay.fr/competitions/6948?secret_key=0eb18fd8-c847-4738-956c-f0f19fe3692e#participate-get_starting_kit). 
@@ -39,3 +35,21 @@ The Reddit texts were extracted from the Codalab folder by the SemEval task 8 cr
 ### Subtask 1
 For subtask 1, the training data contains 5695 reddit texts, and from which, we got 127359 sentences with their corresponding label on the sentence level.
 
+
+-----------------------------
+## Constituency based models 
+
+The constituency_based_models folder of this repository contains the code for the 4 binary models described in the report paper.
+There is a dedicated folder for each model "binary_[class]", where class = ["claim","claim_per_exp","question","per_experience"] which contains the following:
+
+<ul>
+  <li>Dataset csv </li>
+  <li>Model training and evaluation "binary_[class].py" </li>
+  <li>Model weights: "model_bin_[class]_[nr_epochs the model trained on]ep"</li>
+</ul>
+
+To train/evaluate a model, first run pip install -r requirements.txt. The embeddings for each model are provided at this link: https://drive.google.com/drive/u/0/folders/16O57VqD34UJbO_B3roTCSOryK3TN1OaS
+Download the embedding files in their corresponding model folders.
+Run the .py file of the folder.
+
+The functions pertaining to reading the original data files, visualisation of a Reddit post and its spans, the parsing and embedding of posts and their constituents can be found in the parent directory (constituency_based_models). 
